@@ -1,0 +1,29 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "2f2fb25c5256789cfe83f6d4dbac73ee"
+name = "annouce-banner"
+handle = "annouce-banner"
+application_url = "https://partially-brave-flow-nickel.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "sidharth-store111.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://partially-brave-flow-nickel.trycloudflare.com/auth/callback",
+  "https://partially-brave-flow-nickel.trycloudflare.com/auth/shopify/callback",
+  "https://partially-brave-flow-nickel.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+[pos]
+embedded = false
