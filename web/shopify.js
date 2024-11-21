@@ -1,12 +1,26 @@
-import { BillingInterval, LATEST_API_VERSION } from "@shopify/shopify-api";
+import { BillingInterval, LATEST_API_VERSION ,LogSeverity} from "@shopify/shopify-api";
 import { shopifyApp } from "@shopify/shopify-app-express";
 import { SQLiteSessionStorage } from "@shopify/shopify-app-session-storage-sqlite";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-10";
 
 const DB_PATH = `${process.cwd()}/database.sqlite`;
 
+const log = async (severity, message) => {
+  if (severity === LogSeverity.Error) {
+  console.log(message);
+  }
+  if (severity === LogSeverity.Warning) {
+    console.log(message);
+  }
+  if (severity === LogSeverity.Info) {
+    console.log(message);
+  }
+   
+};
+
 // The transactions with Shopify will always be marked as test transactions, unless NODE_ENV is production.
 // See the ensureBilling helper to learn more about billing in this template.
+
 const billingConfig = {
   "My Shopify One-Time Charge": {
     // This is an example configuration that would do a one-time charge for $5 (only USD is currently supported)
@@ -14,9 +28,9 @@ const billingConfig = {
     currencyCode: "USD",
     interval: BillingInterval.OneTime,
   },
-};
+}; 
 
-const shopify = shopifyApp({
+const shopify = shopifyApp({ 
   api: {
     apiVersion: LATEST_API_VERSION,
     restResources,
@@ -25,7 +39,10 @@ const shopify = shopifyApp({
       lineItemBilling: true,
       unstable_managedPricingSupport: true,
     },
-    billing: undefined, // or replace with billingConfig above to enable example billing
+    billing: undefined, 
+    logger: {
+      log,
+    },
   },
   auth: {
     path: "/api/auth",

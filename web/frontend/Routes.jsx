@@ -1,4 +1,5 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
+import AddBanner from "./components/AddBanner";
 
 /**
  * File-based routing.
@@ -25,6 +26,7 @@ export default function Routes({ pages }) {
   return (
     <ReactRouterRoutes>
       {routeComponents}
+      <Route path="/addNewBanner" element={<AddBanner/>} />
       <Route path="*" element={<NotFound />} />
     </ReactRouterRoutes>
   );

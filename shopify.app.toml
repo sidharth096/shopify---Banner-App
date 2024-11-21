@@ -3,7 +3,7 @@
 client_id = "2f2fb25c5256789cfe83f6d4dbac73ee"
 name = "annouce-banner"
 handle = "annouce-banner"
-application_url = "https://partially-brave-flow-nickel.trycloudflare.com"
+application_url = "https://date-variations-draws-alliance.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://partially-brave-flow-nickel.trycloudflare.com/auth/callback",
-  "https://partially-brave-flow-nickel.trycloudflare.com/auth/shopify/callback",
-  "https://partially-brave-flow-nickel.trycloudflare.com/api/auth/callback"
+  "https://date-variations-draws-alliance.trycloudflare.com/auth/callback",
+  "https://date-variations-draws-alliance.trycloudflare.com/auth/shopify/callback",
+  "https://date-variations-draws-alliance.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

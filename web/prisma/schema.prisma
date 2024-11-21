@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Define the enum
+enum BannerType {
+  SIMPLE
+  MOVING
+}
+
+// Define the Banner model
+model Banner {
+  id        Int       @id @default(autoincrement()) @unique
+  name      String  
+  title     String  
+  type      BannerType // Using the enum type
+  status    Boolean   // Required field
+  shopId    Int       // Foreign key to Shop
+  shop      Shop      @relation(fields: [shopId], references: [id]) // Relationship to Shop
+  createdAt DateTime  @default(now()) 
+}
+
+// Define the Shop model
+model Shop {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  shop      String
+  accessToken  Json
+  banners   Banner[] // One-to-many relationship with Banner
+}

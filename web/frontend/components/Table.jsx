@@ -1,50 +1,70 @@
-import { Page, LegacyCard, DataTable, Button } from "@shopify/polaris";
-import React from "react";
+import { Page, LegacyCard, DataTable, Button, Spinner } from "@shopify/polaris";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Table = () => {
-  const rows = [
-    ["Emerald Silk Gown", "simple", true,],
-    ["Mauve Cashmere Scarf", "rotate", false],
-    [
-      "Navy Merino Wool Blazer with khaki chinos and yellow belt",
-      "simple",
-      true,
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-    ],
-  ];
+  // Function to fetch banners from the API
+  const fetchBanners = async () => {
+    setLoading(true); // Start loading spinner
+    try {
+      const response = await fetch(`/api/getBanners?shop=${shopify?.config?.shop}&host=${shopify?.config?.host}`);
+      const data = await response.json();
 
-  const handleAddBanner = async() => {
-    console.log("Add New Banner clicked!");
-    const response = await fetch(`/api/createBanner`);
+      console.log(data);
 
-    console.log(response);
-    
+      // Map the API response to the table rows
+      const bannerRows = data.banners.map((banner) => [
+        banner.name || "No Name",
+        banner.type,
+        banner.status ? "Active" : "Inactive",
+      ]);
+
+      setRows(bannerRows); // Update rows state
+    } catch (error) {
+      console.error("Error fetching banners:", error);
+    } finally {
+      setLoading(false); // Stop loading spinner
+    }
   };
+
+  // Fetch banners when the component mounts
+  useEffect(() => {
+    fetchBanners();
+  }, []);
 
   return (
     <>
       <Page
         title="Banners"
         primaryAction={
-          <Button onClick={handleAddBanner} primary>
+          <Button onClick={()=>navigate("/AddNewBanner")} primary>
             Add New Banner
           </Button>
         }
-       >
+      >
         <LegacyCard>
-          <DataTable
-            columnContentTypes={[
-              "text",
-              "text",
-              "boolean",
-            ]}
-            headings={[
-              "Banner name",
-              "Type",
-              "Status",
-            ]}
-            rows={rows}
-          />
+          {loading ? (
+             <div
+             style={{
+               display: "flex",
+               justifyContent: "center",
+               alignItems: "center",
+               height: "200px", 
+             }}
+           >
+             <Spinner accessibilityLabel="Loading banners" size="large" />
+           </div>
+          ) : (
+            <DataTable
+              columnContentTypes={["text", "text", "text"]}
+              headings={["Banner name", "Type", "Status"]}
+              rows={rows}
+            />
+          )}
         </LegacyCard>
       </Page>
     </>
