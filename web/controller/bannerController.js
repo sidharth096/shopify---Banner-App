@@ -84,3 +84,51 @@ export const getBanner = async (req, res, next) => {
     next(error);
   }
 };
+
+
+export const deleteBanner = async (req, res, next) => {
+  try {
+    
+    const id = parseInt(req.params.id);;
+       
+    await prisma.banner.delete({
+      where: { id },
+    });
+    return res.status(200).json({success: true, message: "Banner deleted successfully" });
+  } catch (error) {
+    next(error); 
+  }
+};
+
+export const getBannerDetails = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const banner = await prisma.banner.findFirst({
+      where: { id: parseInt(id) },
+    });
+    if (!banner) {
+      return res.status(404).json({ message: "Banner not found" });
+    }
+    return res.status(200).json({success: true, banner });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const editBanner = async (req, res, next) => {
+  try {
+    console.log("req.body", req.body);
+    const { id } = req.params;
+    const { name, title, type, status } = req.body;
+    const banner = await prisma.banner.update({
+      where: { id: parseInt(id) },
+      data: { name, title, type, status },
+    });
+    if (!banner) {
+      return res.status(404).json({ message: "Banner not found" });
+    }
+    return res.status(200).json({success: true, banner });
+  } catch (error) {
+    next(error);
+  } 
+};
