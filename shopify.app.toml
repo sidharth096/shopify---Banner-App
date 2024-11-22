@@ -3,7 +3,7 @@
 client_id = "2f2fb25c5256789cfe83f6d4dbac73ee"
 name = "annouce-banner"
 handle = "annouce-banner"
-application_url = "https://introduces-speaker-adaptor-greetings.trycloudflare.com"
+application_url = "https://aid-dogs-isa-jill.trycloudflare.com"
 embedded = true
 
 [build]
@@ -17,9 +17,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://introduces-speaker-adaptor-greetings.trycloudflare.com/auth/callback",
-  "https://introduces-speaker-adaptor-greetings.trycloudflare.com/auth/shopify/callback",
-  "https://introduces-speaker-adaptor-greetings.trycloudflare.com/api/auth/callback"
+  "https://aid-dogs-isa-jill.trycloudflare.com/auth/callback",
+  "https://aid-dogs-isa-jill.trycloudflare.com/auth/shopify/callback",
+  "https://aid-dogs-isa-jill.trycloudflare.com/api/auth/callback"
 ]
 
 [webhooks]

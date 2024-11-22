@@ -1,0 +1,45 @@
+
+{% schema %}
+  {
+    "name": "Banner",
+    "target": "head",
+    "settings": [
+      {
+        "type": "color",
+        "id": "bgColor",
+        "label": "Background Colour",
+        "default": "#F2F2F2"
+      },
+      {
+        "type": "color",
+        "id": "textColour",
+        "label": "Text colour",
+        "default": "#000000"
+      } ,
+      {
+       "type": "number",
+       "id": "text_size",
+       "label": "Text size",
+       "default": 30
+      },
+      {
+        "type": "number",
+        "id": "container_height",
+        "label": "Background height",
+        "default": 50
+      } 
+      
+    ]
+  }
+  {% endschema %}
+  
+    {% render 'singleBanner',
+      bgColor: block.settings.bgColor,
+      textColour: block.settings.textColour,
+      container_height: block.settings.container_height,
+      text_size: block.settings.text_size,
+    %} 
+
+
+
+
