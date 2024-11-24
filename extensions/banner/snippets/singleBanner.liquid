@@ -3,6 +3,7 @@
   assign text_color = textColour | default: '#000000'
   assign container_height = container_height | default: 50
   assign text_size = text_size | default: 30
+  assign font_weight = font_weight |default:'400'
   assign banner_data = app.metafields.banner_data.banner_data_key.value
 %}
 
@@ -27,6 +28,7 @@
     color: {{ text_color }};
     font-size: {{ text_size }}px;
     white-space: nowrap; 
+    font-weight: {{font_weight}};
   }
 
   .banner-title.animated {

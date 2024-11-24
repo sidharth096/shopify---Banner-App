@@ -4,46 +4,9 @@ import { getAppInstallationID } from "../helpers/getAppInstallationID.js";
 
 const prisma = new PrismaClient();
 
-// export const createBanner = async (req, res, next) => {
-//   try {
-//     const shop = await prisma.shop.create({
-//       data: {
-//         email: 'shop@example.com',
-//         name: 'Test Shop',
-//         shop: 'testshop.myshopify.com',
-//         banners: {
-//           create: [
-//             {
-//               name: 'Sample Banner 1',
-//               title: 'big sale',
-//               type: 'SIMPLE',
-//               status: true,
-//             },
-//             {
-//               name: 'Sample Banner 2',
-//               title: 'summer sale',
-//               type: 'MOVING',
-//               status: false,
-//             },
-//           ],
-//         },
-//       },
-//       include: {
-//         banners: true,
-//       },
-//     });
-
-//     return res.status(200).json({ message: 'Shop and banners created successfully', shop });
-//   } catch (error) {
-
-//     next(error);
-//   }
-// }; 
-
 export const createBanner = async (req, res, next) => {
-  console.log("req.body", req.body);
-  
-  const { name, title, type, status  } = req.body; // Extract required banner details from request body
+
+  const { name, title, type, status } = req.body; // Extract required banner details from request body
   const shopId = req.shop.id;
   const session = res.locals.shopify.session;
   try {
@@ -53,7 +16,9 @@ export const createBanner = async (req, res, next) => {
     });
 
     if (!shopExists) {
-      return res.status(404).json({ message: "Shop not found",success: false });
+      return res
+        .status(404)
+        .json({ message: "Shop not found", success: false });
     }
 
     // Create a new banner for the existing shop
@@ -68,13 +33,11 @@ export const createBanner = async (req, res, next) => {
         },
       },
     });
-    
-    const gid = await getAppInstallationID(req.shop.shop,session)
 
-    console.log("gid==============",gid);
+    const gid = await getAppInstallationID(req.shop.shop, session);
 
-    if(status === true){
-      const appmeta = await createOrUpdateAppMeta(gid,session,banner)
+    if (status === true) {
+      await createOrUpdateAppMeta(gid, session, banner);
     }
 
     return res
@@ -85,28 +48,33 @@ export const createBanner = async (req, res, next) => {
   }
 };
 
-
 export const getBanner = async (req, res, next) => {
   try {
-    const banners = await prisma.banner.findMany();  
+    const banners = await prisma.banner.findMany();
     return res.status(200).json({ banners });
   } catch (error) {
     next(error);
   }
 };
 
-
 export const deleteBanner = async (req, res, next) => {
   try {
-    
-    const id = parseInt(req.params.id);;
-       
+    const id = parseInt(req.params.id);
+    const session = res.locals.shopify.session;
+
+    const gid = await getAppInstallationID(req.shop.shop, session);
+
+    const banner = { id: id, title: "", type: "", status: false };
+    await createOrUpdateAppMeta(gid, session, banner);
+
     await prisma.banner.delete({
       where: { id },
     });
-    return res.status(200).json({success: true, message: "Banner deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Banner deleted successfully" });
   } catch (error) {
-    next(error); 
+    next(error);
   }
 };
 
@@ -119,7 +87,7 @@ export const getBannerDetails = async (req, res, next) => {
     if (!banner) {
       return res.status(404).json({ message: "Banner not found" });
     }
-    return res.status(200).json({success: true, banner });
+    return res.status(200).json({ success: true, banner });
   } catch (error) {
     next(error);
   }
@@ -127,6 +95,8 @@ export const getBannerDetails = async (req, res, next) => {
 
 export const editBanner = async (req, res, next) => {
   try {
+    const session = res.locals.shopify.session;
+
     console.log("req.body", req.body);
     const { id } = req.params;
     const { name, title, type, status } = req.body;
@@ -134,11 +104,17 @@ export const editBanner = async (req, res, next) => {
       where: { id: parseInt(id) },
       data: { name, title, type, status },
     });
+
+    const gid = await getAppInstallationID(req.shop.shop, session);
+
+    await createOrUpdateAppMeta(gid, session, banner);
+
     if (!banner) {
       return res.status(404).json({ message: "Banner not found" });
     }
-    return res.status(200).json({success: true, banner });
+
+    return res.status(200).json({ success: true, banner });
   } catch (error) {
     next(error);
-  } 
+  }
 };

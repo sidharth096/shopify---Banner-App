@@ -23,6 +23,17 @@
        "default": 30
       },
       {
+      "type": "select",
+      "id": "font_weight",
+      "label": "Font Weight",
+      "options": [
+        { "value": "100", "label": "Thin" },
+        { "value": "400", "label": "Regular" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+      {
         "type": "number",
         "id": "container_height",
         "label": "Background height",
@@ -38,6 +49,7 @@
       textColour: block.settings.textColour,
       container_height: block.settings.container_height,
       text_size: block.settings.text_size,
+      font_weight:block.settings.font_weight
     %} 
 
 
