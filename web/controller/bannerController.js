@@ -1,4 +1,6 @@
 import { PrismaClient } from "@prisma/client";
+import createOrUpdateAppMeta from "../helpers/createOrUpdateAppMeta.js";
+import { getAppInstallationID } from "../helpers/getAppInstallationID.js";
 
 const prisma = new PrismaClient();
 
@@ -43,7 +45,7 @@ export const createBanner = async (req, res, next) => {
   
   const { name, title, type, status  } = req.body; // Extract required banner details from request body
   const shopId = req.shop.id;
-
+  const session = res.locals.shopify.session;
   try {
     // Check if the shop exists before creating the banner
     const shopExists = await prisma.shop.findFirst({
@@ -66,6 +68,14 @@ export const createBanner = async (req, res, next) => {
         },
       },
     });
+    
+    const gid = await getAppInstallationID(req.shop.shop,session)
+
+    console.log("gid==============",gid);
+
+    if(status === true){
+      const appmeta = await createOrUpdateAppMeta(gid,session,banner)
+    }
 
     return res
       .status(201)

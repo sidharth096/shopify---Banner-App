@@ -3,39 +3,55 @@
   assign text_color = textColour | default: '#000000'
   assign container_height = container_height | default: 50
   assign text_size = text_size | default: 30
+  assign banner_data = app.metafields.banner_data.banner_data_key.value
 %}
 
 <style>
   .banner-container {
     background-color: {{ bg_color }};
-    height: {{ container_height }}px;
+    overflow: hidden;
+    width: 100%; 
+    position: relative; 
+  }
+
+  .title-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     position: relative;
+    width: 100%;
+    height: {{ container_height }}px;
   }
 
   .banner-title {
-    padding: auto;
     color: {{ text_color }};
     font-size: {{ text_size }}px;
-    white-space: nowrap;
-    animation: move-text 20s linear infinite;
+    white-space: nowrap; 
+  }
+
+  .banner-title.animated {
+    position: absolute; 
+    animation: move-text 10s linear infinite; /* Apply animation only to these */
   }
 
   @keyframes move-text {
     0% {
-      transform: translateX(100%);
+      transform: translateX(100%); /* Start off-screen */
     }
     100% {
-      transform: translateX(-100%);
+      transform: translateX(-100%); /* Scroll completely off-screen */
     }
   }
 </style>
 
 <div class="banner-container"> 
-
-    <h1 class="banner-title">Hello everyone</h1>
-
+  {% for banner in banner_data %}
+    <div class="title-container">
+      {% if banner.animation == true %}
+        <h1 class="banner-title animated">{{ banner.title }}</h1>
+      {% else %}
+        <h1 class="banner-title">{{ banner.title }}</h1>
+      {% endif %}
+    </div>
+  {% endfor %}
 </div>

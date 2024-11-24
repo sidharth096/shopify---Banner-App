@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export default async (req, res, session) => {
   console.log("::::::::::::::::::: Entered setupShop :::::::::::::::::::",session);
   const { shop } = req.query; // Extracting 'shop' from query params
-  const encryptionKey = process.env.ENCRYPTION_KEY || "1a2b3c4d5e6f7g8h";
+  const encryptionKey = process.env.BANNER_SUPERKEY || "1a2b3c4d5e6f7g8h";
 
   try {
     if (!shop) {
