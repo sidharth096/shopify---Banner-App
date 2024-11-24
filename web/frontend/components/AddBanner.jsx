@@ -17,6 +17,7 @@ const AddBanner = ({ onBannerAdded }) => {
   const [type, setType] = useState("SIMPLE");
   const [status, setStatus] = useState(false);
   const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -33,7 +34,7 @@ const AddBanner = ({ onBannerAdded }) => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, type, status, title }),
+          body: JSON.stringify({ name, type, status, title,link }),
         }
       );
 
@@ -85,6 +86,12 @@ const AddBanner = ({ onBannerAdded }) => {
                 label="Title"
                 value={title}
                 onChange={(value) => setTitle(value)}
+                autoComplete="off"
+              />
+              <TextField
+                label="Link"
+                value={link}
+                onChange={(value) => setLink(value)}
                 autoComplete="off"
               />
               <Select

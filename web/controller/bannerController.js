@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export const createBanner = async (req, res, next) => {
 
-  const { name, title, type, status } = req.body; // Extract required banner details from request body
+  const { name, title, type, status,link} = req.body; // Extract required banner details from request body
   const shopId = req.shop.id;
   const session = res.locals.shopify.session;
   try {
@@ -28,6 +28,7 @@ export const createBanner = async (req, res, next) => {
         title,
         type,
         status,
+        link,
         shop: {
           connect: { id: shopId }, // Connect banner to the existing shop
         },
@@ -37,7 +38,7 @@ export const createBanner = async (req, res, next) => {
     const gid = await getAppInstallationID(req.shop.shop, session);
 
     if (status === true) {
-      await createOrUpdateAppMeta(gid, session, banner);
+      await createOrUpdateAppMeta(gid, session, banner,link);
     }
 
     return res
@@ -99,10 +100,10 @@ export const editBanner = async (req, res, next) => {
 
     console.log("req.body", req.body);
     const { id } = req.params;
-    const { name, title, type, status } = req.body;
+    const { name, title, type, status,link } = req.body;
     const banner = await prisma.banner.update({
       where: { id: parseInt(id) },
-      data: { name, title, type, status },
+      data: { name, title, type, status,link },
     });
 
     const gid = await getAppInstallationID(req.shop.shop, session);

@@ -43,16 +43,16 @@ const fetchMetafield = async (client, gid) => {
  * @returns {Array} Updated metafield value.
  */
 const updateMetafieldValue = (metafieldValue, banner) => {
-  const { id, title, type, status } = banner;
+  const { id, title, type, status,link } = banner;
   const animation = type === "MOVING";
 
   if (status) {
     // Add or update the entry if status is true
     const existingIndex = metafieldValue.findIndex((entry) => entry.id === id);
     if (existingIndex !== -1) {
-      metafieldValue[existingIndex] = { id, title, animation };
+      metafieldValue[existingIndex] = { id, title, animation,link };
     } else {
-      metafieldValue.push({ id, title, animation });
+      metafieldValue.push({ id, title, animation,link });
     }
   } else {
     // Remove the entry if status is false

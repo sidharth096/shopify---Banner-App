@@ -23,6 +23,7 @@ model Banner {
   shopId    Int       // Foreign key to Shop
   shop      Shop      @relation(fields: [shopId], references: [id]) // Relationship to Shop
   createdAt DateTime  @default(now()) 
+  link      String
 }
 
 // Define the Shop model

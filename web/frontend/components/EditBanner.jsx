@@ -20,8 +20,9 @@ const EditBanner = ({ onBannerUpdated }) => {
   const [name, setName] = useState("");
   const [type, setType] = useState("SIMPLE");
   const [status, setStatus] = useState(false);
-  const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState("");
+  const [link, setLink] = useState("");
   const [fetching, setFetching] = useState(true); // For API loading state
   const navigate = useNavigate();
 
@@ -51,6 +52,7 @@ const EditBanner = ({ onBannerUpdated }) => {
           setType(data.banner.type || "SIMPLE");
           setStatus(data.banner.status || false);
           setTitle(data.banner.title || "");
+          setLink(data.banner.link || "");
         } else {
           shopify.toast.show(data.message || "Failed to fetch banner details", {
             duration: 5000,
@@ -79,7 +81,7 @@ const EditBanner = ({ onBannerUpdated }) => {
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, type, status, title }),
+          body: JSON.stringify({ name, type, status, title,link}),
         }
       );
 
@@ -156,6 +158,12 @@ const EditBanner = ({ onBannerUpdated }) => {
                 label="Title"
                 value={title}
                 onChange={(value) => setTitle(value)}
+                autoComplete="off"
+              />
+              <TextField
+                label="Link"
+                value={link}
+                onChange={(value) => setLink(value)}
                 autoComplete="off"
               />
               <Select

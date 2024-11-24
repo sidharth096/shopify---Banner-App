@@ -1,10 +1,10 @@
 {% liquid
-  assign bg_color = bgColor | default: '#F2F2F2'
-  assign text_color = textColour | default: '#000000'
-  assign container_height = container_height | default: 50
-  assign text_size = text_size | default: 30
-  assign font_weight = font_weight |default:'400'
-  assign banner_data = app.metafields.banner_data.banner_data_key.value
+  assign bg_color = block.settings.bgColor | default: '#F2F2F2'
+  assign text_color = block.settings.textColour | default: '#000000'
+  assign container_height = block.settings.container_height | default: 50
+  assign text_size = block.settings.text_size | default: 30
+  assign font_weight = block.settings.font_weight | default: '400'
+  assign banner_data = app.metafields.banner_data.banner_data_key.value 
 %}
 
 <style>
@@ -18,22 +18,42 @@
   .title-container {
     display: flex;
     justify-content: center;
+    gap: 10px;
     align-items: center;
     position: relative;
     width: 100%;
     height: {{ container_height }}px;
+    padding: 0 10px;
   }
 
   .banner-title {
     color: {{ text_color }};
     font-size: {{ text_size }}px;
     white-space: nowrap; 
-    font-weight: {{font_weight}};
+    font-weight: {{ font_weight }};
   }
 
   .banner-title.animated {
     position: absolute; 
     animation: move-text 10s linear infinite; /* Apply animation only to these */
+  }
+
+  .link-button {
+    background-color: black;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 8px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+  }
+
+  .link-button:hover {
+    background-color: #333;
   }
 
   @keyframes move-text {
@@ -47,13 +67,22 @@
 </style>
 
 <div class="banner-container"> 
-  {% for banner in banner_data %}
-    <div class="title-container">
-      {% if banner.animation == true %}
-        <h1 class="banner-title animated">{{ banner.title }}</h1>
-      {% else %}
-        <h1 class="banner-title">{{ banner.title }}</h1>
-      {% endif %}
-    </div>
-  {% endfor %}
+  {% if banner_data %}
+    {% for banner in banner_data %}
+      <div class="title-container">
+        {% if banner.animation %}
+          <h1 class="banner-title animated">{{ banner.title }}</h1>
+        {% else %}
+          <h1 class="banner-title">{{ banner.title }}</h1>
+        {% endif %}
+        <div>
+          <a href={{ banner.link}} class="link-button" rel="noopener noreferrer">
+            Shop Now
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No banner data available.</p>
+  {% endif %}
 </div>
